@@ -178,10 +178,12 @@ func work.GetRelated(ctx context.Context, c *openalex.Client, workID string, pag
 ### work.GetByAuthor
 
 ```go
-func work.GetByAuthor(ctx context.Context, c *openalex.Client, authorID string, page openalex.PageParams, selectFields ...string) (*openalex.ListResponse[work.Work], error)
+func work.GetByAuthor(ctx context.Context, c *openalex.Client, authorID string, page openalex.PageParams, extraFilter string, selectFields ...string) (*openalex.ListResponse[work.Work], error)
 ```
 
 返回指定作者的全部论文。固定排序 `cited_by_count:desc`。
+
+`extraFilter` 为空字符串时不追加额外过滤；非空时会追加到 filter 查询中（如 `"concepts.id:C154945302"`）。
 
 ---
 

@@ -252,10 +252,10 @@ func GetRelated(ctx context.Context, c *openalex.Client, workID string, page ope
 ### GetByAuthor — 获取作者的全部论文
 
 ```go
-func GetByAuthor(ctx context.Context, c *openalex.Client, authorID string, page openalex.PageParams, selectFields ...string) (*openalex.ListResponse[Work], error)
+func GetByAuthor(ctx context.Context, c *openalex.Client, authorID string, page openalex.PageParams, extraFilter string, selectFields ...string) (*openalex.ListResponse[Work], error)
 ```
 
-默认按 `cited_by_count:desc` 排序。
+默认按 `cited_by_count:desc` 排序。`extraFilter` 非空时追加到 filter 查询（如 `"concepts.id:C154945302"`）。
 
 ### GetBySource — 获取期刊的全部论文
 

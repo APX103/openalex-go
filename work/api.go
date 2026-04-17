@@ -110,10 +110,15 @@ func GetRelated(ctx context.Context, c *openalex.Client, workID string, page ope
 }
 
 // GetByAuthor returns works by a specific author.
-func GetByAuthor(ctx context.Context, c *openalex.Client, authorID string, page openalex.PageParams, selectFields ...string) (*openalex.ListResponse[Work], error) {
+// If extraFilter is non-empty, it is appended to the filter query (e.g. "concepts.id:C123").
+func GetByAuthor(ctx context.Context, c *openalex.Client, authorID string, page openalex.PageParams, extraFilter string, selectFields ...string) (*openalex.ListResponse[Work], error) {
 	page = page.Apply()
 	q := make(url.Values)
-	q.Set("filter", fmt.Sprintf("author.id:%s", authorID))
+	f := fmt.Sprintf("author.id:%s", authorID)
+	if extraFilter != "" {
+		f += "," + extraFilter
+	}
+	q.Set("filter", f)
 	q.Set("sort", "cited_by_count:desc")
 	q.Set("page", fmt.Sprintf("%d", page.Page))
 	q.Set("per_page", fmt.Sprintf("%d", page.PerPage))

@@ -76,7 +76,7 @@ work.GetByIDs(ctx, c, []string{"W1", "W2"})
 work.GetCitedBy(ctx, c, "W123", openalex.PageParams{Page: 1, PerPage: 20})
 work.GetReferencedWorks(ctx, c, "W123", openalex.DefaultPageParams())
 work.GetRelated(ctx, c, "W123", openalex.DefaultPageParams())
-work.GetByAuthor(ctx, c, "A123", openalex.PageParams{PerPage: 50})
+work.GetByAuthor(ctx, c, "A123", openalex.PageParams{PerPage: 50}, "")
 work.GetBySource(ctx, c, "S123", openalex.DefaultPageParams(), &openalex.SortOption{Field: "publication_date"})
 ```
 
