@@ -71,6 +71,7 @@ c := openalex.New(
 
 ```go
 work.Search(ctx, c, work.SearchParams{Query: "...", Filters: map[string]string{"publication_year": "2024"}})
+work.GroupBy(ctx, c, work.SearchParams{Filters: map[string]string{"publication_year": "2024"}, GroupBy: "type"})
 work.Get(ctx, c, "W1234567890", "id", "display_name", "abstract_inverted_index")
 work.GetByIDs(ctx, c, []string{"W1", "W2"})
 work.GetCitedBy(ctx, c, "W123", openalex.PageParams{Page: 1, PerPage: 20})

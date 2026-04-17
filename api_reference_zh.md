@@ -86,6 +86,7 @@ func work.Search(ctx context.Context, c *openalex.Client, params work.SearchPara
 | Sort | `*openalex.SortOption` | 排序。`nil` 则按相关性降序 |
 | Select | `[]string` | 返回字段白名单，用逗号拼成 `select` 参数，减少响应体积 |
 | Filters | `map[string]string` | 过滤条件，自动拼接为 `key:value,key2:value2` |
+| GroupBy | `string` | 聚合字段，用于 `work.GroupBy`，如 `"type"`、`"publication_year"` |
 
 ```go
 resp, err := work.Search(ctx, c, work.SearchParams{
@@ -112,6 +113,32 @@ resp, err := work.Search(ctx, c, work.SearchParams{
 | `concepts.id` | Concept 短 ID | `"C154945302"` | 关联概念 |
 | `open_access.oa_status` | OA 枚举值 | `"gold"` / `"diamond"` | OA 类型，见 OpenAccess.OaStatus 取值 |
 | `default.search_filter` | 枚举值 | `"journal"` | 限定搜索范围为期刊论文 |
+
+---
+
+### work.GroupBy
+
+```go
+func work.GroupBy(ctx context.Context, c *openalex.Client, params work.SearchParams) ([]openalex.GroupBy, error)
+```
+
+返回匹配查询和过滤条件的论文的聚合桶。`params.GroupBy` 指定聚合字段（如 `"type"`、`"publication_year"`、`"primary_topic.field.id"`）。
+
+```go
+buckets, err := work.GroupBy(ctx, c, work.SearchParams{
+    Filters: map[string]string{"publication_year": "2024"},
+    GroupBy: "type",
+})
+// buckets: [{Key: "article", KeyDisplayName: "Article", Count: 1234}, ...]
+```
+
+**返回值**：`[]openalex.GroupBy`。
+
+| 字段 | 类型 | JSON | 说明 |
+|------|------|------|------|
+| `Key` | `string` | `key` | 聚合键值 |
+| `KeyDisplayName` | `string` | `key_display_name` | 聚合键的可读名称 |
+| `Count` | `int` | `count` | 该桶的计数 |
 
 ---
 

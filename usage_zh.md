@@ -148,6 +148,7 @@ type SearchParams struct {
     Sort    *openalex.SortOption   // 排序，nil 则按相关性
     Select  []string               // 返回字段白名单，减少传输量
     Filters map[string]string      // 过滤条件
+    GroupBy string                 // 聚合字段，用于 GroupBy 查询
 }
 ```
 
@@ -196,6 +197,25 @@ resp, _ := work.Search(ctx, c, work.SearchParams{
 | `default.search_filter` | `"journal"` | 限定搜索范围 |
 
 多条件用逗号分隔，SDK 会自动拼接：`Filters: map[string]string{"publication_year": "2024", "type": "article"}` → `filter=publication_year:2024,type:article`。
+
+### GroupBy — 聚合查询
+
+```go
+func GroupBy(ctx context.Context, c *openalex.Client, params SearchParams) ([]openalex.GroupBy, error)
+```
+
+返回匹配条件的论文按指定字段聚合后的桶。常用于统计各类别数量：
+
+```go
+// 按文献类型统计 2024 年论文数
+buckets, _ := work.GroupBy(ctx, c, work.SearchParams{
+    Filters: map[string]string{"publication_year": "2024"},
+    GroupBy: "type",
+})
+for _, b := range buckets {
+    fmt.Printf("%s: %d\n", b.KeyDisplayName, b.Count)
+}
+```
 
 ### Get — 获取单篇论文
 
