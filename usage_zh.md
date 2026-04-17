@@ -5,7 +5,7 @@
 ## 安装
 
 ```bash
-go get github.com/xxx/openalex-go
+go get github.com/APX103/openalex-go
 ```
 
 ## 快速上手
@@ -16,9 +16,9 @@ import (
     "fmt"
     "log"
 
-    "github.com/xxx/openalex-go"
-    "github.com/xxx/openalex-go/work"
-    "github.com/xxx/openalex-go/util"
+    "github.com/APX103/openalex-go"
+    "github.com/APX103/openalex-go/work"
+    "github.com/APX103/openalex-go/util"
 )
 
 func main() {
@@ -250,7 +250,7 @@ func GetBySource(ctx context.Context, c *openalex.Client, sourceID string, page 
 ```go
 type Work struct {
     ID           string                // OpenAlex ID（完整 URL）
-    Doi          string                // DOI（完整 URL，如 https://doi.org/10.xxx）
+    Doi          string                // DOI（完整 URL，如 https://doi.org/10.APX103）
     DisplayName  string                // 论文标题
     PubYear      int                   // 发表年份
     PubDate      string                // 发表日期（YYYY-MM-DD）
@@ -269,7 +269,7 @@ type Work struct {
 }
 ```
 
-注意：`Doi` 返回的是完整 URL（`https://doi.org/10.xxx`），如需纯 DOI 值需自行 `strings.TrimPrefix`。
+注意：`Doi` 返回的是完整 URL（`https://doi.org/10.APX103`），如需纯 DOI 值需自行 `strings.TrimPrefix`。
 
 ### OpenAccess
 
@@ -539,7 +539,7 @@ slices.SortFunc(w.CountsByYear, func(a, b CountByYear) int {
 
 ### DOI 格式
 
-`Work.Doi` 返回完整 URL（`https://doi.org/10.xxx`）。如需纯 DOI 值：
+`Work.Doi` 返回完整 URL（`https://doi.org/10.APX103`）。如需纯 DOI 值：
 
 ```go
 doi := strings.TrimPrefix(w.Doi, "https://doi.org/")
