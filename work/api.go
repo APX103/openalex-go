@@ -37,10 +37,14 @@ func Get(ctx context.Context, c *openalex.Client, id string, selectFields ...str
 }
 
 // GetByIDs batch-fetches works by OpenAlex IDs.
+// OpenAlex limits batch requests to 200 IDs; an error is returned for larger batches.
 func GetByIDs(ctx context.Context, c *openalex.Client, ids []string, selectFields ...string) ([]Work, error) {
+	if len(ids) > 200 {
+		return nil, fmt.Errorf("GetByIDs: max 200 IDs per request, got %d", len(ids))
+	}
 	q := make(url.Values)
 	q.Set("filter", "openalex:"+util.JoinPipe(ids))
-	q.Set("per_page", fmt.Sprintf("%d", min(len(ids), 200)))
+	q.Set("per_page", fmt.Sprintf("%d", len(ids)))
 	if len(selectFields) > 0 {
 		q.Set("select", strings.Join(selectFields, ","))
 	}
