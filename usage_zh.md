@@ -40,13 +40,33 @@ func main() {
 
 ```go
 c := openalex.New(
-    openalex.WithAPIKey("key"),           // API Key，速率限制 10→100 次/秒
+    openalex.WithAPIKey("your-api-key"),   // API Key，速率限制 10→100 次/秒
     openalex.WithMailto("you@example.com"), // 无 Key 时使用礼貌池
     openalex.WithTimeout(30 * time.Second), // 请求超时，默认 15s
     openalex.WithBaseURL("https://proxy"),   // 自定义代理地址
     openalex.WithHTTPClient(customClient),   // 完全替换 HTTP 客户端
 )
 ```
+
+### API Key 配置
+
+在 [openalex.org](https://openalex.org/) 注册后可免费获取 API Key。
+
+配置方式很简单，在 `New()` 时传入即可：
+
+```go
+c := openalex.New(openalex.WithAPIKey("your-api-key"))
+```
+
+**生效机制**：SDK 会在每次请求的 query string 中自动附加 `api_key=your-api-key`，无需手动处理。具体逻辑（[client.go:48-52](client.go#L48-L52)）：
+
+1. 如果设置了 `apiKey`，所有请求附带 `?api_key=xxx`
+2. 否则如果设置了 `mailto`，附带 `?mailto=xxx`（礼貌池）
+3. 都没设置则不带认证参数（共享池，100 credits/天）
+
+`apiKey` 和 `mailto` 互斥——有 Key 时 mailto 不会生效，所以两个都设也没问题，Key 优先。
+
+**速率提升**：无 Key 约 10 次/秒，有 Key 提升到 100 次/秒。
 
 无 API Key 时务必设置 `WithMailto`，否则共享池仅 100 credits/天。
 
