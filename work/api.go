@@ -6,8 +6,8 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/xxx/openalex-go"
-	"github.com/xxx/openalex-go/util"
+	"github.com/APX103/openalex-go"
+	"github.com/APX103/openalex-go/util"
 )
 
 // Search searches for works matching the query.

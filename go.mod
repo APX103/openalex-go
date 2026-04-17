@@ -1,3 +1,3 @@
-module github.com/xxx/openalex-go
+module github.com/APX103/openalex-go
 
 go 1.21.13

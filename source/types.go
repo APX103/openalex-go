@@ -1,6 +1,6 @@
 package source
 
-import "github.com/xxx/openalex-go"
+import "github.com/APX103/openalex-go"
 
 // Source represents a journal or repository from OpenAlex.
 type Source struct {

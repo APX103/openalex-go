@@ -5,7 +5,7 @@ Go SDK for the [OpenAlex](https://openalex.org/) academic knowledge graph API.
 ## Install
 
 ```bash
-go get github.com/xxx/openalex-go
+go get github.com/APX103/openalex-go
 ```
 
 ## Quick Start
@@ -16,9 +16,9 @@ import (
     "fmt"
     "log"
 
-    "github.com/xxx/openalex-go"
-    "github.com/xxx/openalex-go/work"
-    "github.com/xxx/openalex-go/util"
+    "github.com/APX103/openalex-go"
+    "github.com/APX103/openalex-go/work"
+    "github.com/APX103/openalex-go/util"
 )
 
 func main() {

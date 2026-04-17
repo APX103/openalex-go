@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"strings"
 
-	"github.com/xxx/openalex-go"
+	"github.com/APX103/openalex-go"
 )
 
 // SearchParams configures a work search request.

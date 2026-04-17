@@ -1,34 +1,34 @@
 package work
 
 import (
-	"github.com/xxx/openalex-go"
-	"github.com/xxx/openalex-go/util"
+	"github.com/APX103/openalex-go"
+	"github.com/APX103/openalex-go/util"
 )
 
 // Work represents a scholarly work (paper) from OpenAlex.
 type Work struct {
-	ID           string                  `json:"id"`
-	Doi          string                  `json:"doi"`
-	DisplayName  string                  `json:"display_name"`
-	PubYear      int                     `json:"publication_year"`
-	PubDate      string                  `json:"publication_date"`
-	Type         string                  `json:"type"`
-	Language     string                  `json:"language,omitempty"`
-	IndexedIn    []string                `json:"indexed_in,omitempty"`
-	OpenAccess   OpenAccess              `json:"open_access"`
-	Authorships  []Authorship            `json:"authorships"`
-	PrimaryLoc   *PrimaryLocation        `json:"primary_location"`
-	BestOALoc    *PrimaryLocation        `json:"best_oa_location,omitempty"`
-	Topics       []WorkTopic             `json:"topics,omitempty"`
-	Concepts     []openalex.Concept      `json:"concepts,omitempty"`
-	Keywords     []Keyword               `json:"keywords,omitempty"`
-	Refs         []string                `json:"referenced_works,omitempty"`
-	Related      []string                `json:"related_works,omitempty"`
-	CountsByYear []openalex.CountByYear  `json:"counts_by_year,omitempty"`
-	CitedByCount int                     `json:"cited_by_count"`
-	AbstractInv  map[string][]int        `json:"abstract_inverted_index,omitempty"`
-	Biblio       *Biblio                 `json:"biblio,omitempty"`
-	IDs          WorkIDs                 `json:"ids,omitempty"`
+	ID           string                 `json:"id"`
+	Doi          string                 `json:"doi"`
+	DisplayName  string                 `json:"display_name"`
+	PubYear      int                    `json:"publication_year"`
+	PubDate      string                 `json:"publication_date"`
+	Type         string                 `json:"type"`
+	Language     string                 `json:"language,omitempty"`
+	IndexedIn    []string               `json:"indexed_in,omitempty"`
+	OpenAccess   OpenAccess             `json:"open_access"`
+	Authorships  []Authorship           `json:"authorships"`
+	PrimaryLoc   *PrimaryLocation       `json:"primary_location"`
+	BestOALoc    *PrimaryLocation       `json:"best_oa_location,omitempty"`
+	Topics       []WorkTopic            `json:"topics,omitempty"`
+	Concepts     []openalex.Concept     `json:"concepts,omitempty"`
+	Keywords     []Keyword              `json:"keywords,omitempty"`
+	Refs         []string               `json:"referenced_works,omitempty"`
+	Related      []string               `json:"related_works,omitempty"`
+	CountsByYear []openalex.CountByYear `json:"counts_by_year,omitempty"`
+	CitedByCount int                    `json:"cited_by_count"`
+	AbstractInv  map[string][]int       `json:"abstract_inverted_index,omitempty"`
+	Biblio       *Biblio                `json:"biblio,omitempty"`
+	IDs          WorkIDs                `json:"ids,omitempty"`
 }
 
 // PDFWork interface implementation — enables util.ResolvePDF(w).
@@ -116,9 +116,9 @@ type LocationSource struct {
 
 // WorkTopic describes a topic associated with a work.
 type WorkTopic struct {
-	ID          string           `json:"id"`
-	DisplayName string           `json:"display_name"`
-	Count       int              `json:"count"`
+	ID          string            `json:"id"`
+	DisplayName string            `json:"display_name"`
+	Count       int               `json:"count"`
 	Subfield    openalex.TopicRef `json:"subfield"`
 	Field       openalex.TopicRef `json:"field"`
 	Domain      openalex.TopicRef `json:"domain"`
