@@ -22,9 +22,11 @@ func Search(ctx context.Context, c *openalex.Client, params SearchParams) (*open
 
 // GroupBy returns facet buckets for works matching the given query and filters.
 // The GroupBy field in params specifies which field to aggregate (e.g. "type", "publication_year").
+// Note: OpenAlex uses per_page to control the number of groups returned, so we set it to 50
+// to ensure all groups are included (e.g. 26 fields, ~24 types).
 func GroupBy(ctx context.Context, c *openalex.Client, params SearchParams) ([]openalex.GroupBy, error) {
 	q := params.toQuery()
-	q.Set("per_page", "1")
+	q.Set("per_page", "50")
 	var result openalex.ListResponse[Work]
 	if err := c.DoRequest(ctx, "/works", q, &result); err != nil {
 		return nil, err
