@@ -32,3 +32,8 @@ func WithBaseURL(u string) Option {
 func WithTimeout(d time.Duration) Option {
 	return func(c *Client) { c.httpClient.Timeout = d }
 }
+
+// WithRecorder sets a custom RequestRecorder for metrics collection.
+func WithRecorder(r RequestRecorder) Option {
+	return func(c *Client) { c.recorder = r }
+}

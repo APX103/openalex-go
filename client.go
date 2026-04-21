@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"net/url"
 	"time"
+
+	"github.com/zeromicro/go-zero/core/logx"
 )
 
 const DefaultBaseURL = "https://api.openalex.org"
@@ -18,6 +20,7 @@ type Client struct {
 	apiKey     string
 	mailto     string
 	httpClient *http.Client
+	recorder   RequestRecorder
 }
 
 // New creates a new Client with the given options.
@@ -25,6 +28,7 @@ func New(opts ...Option) *Client {
 	c := &Client{
 		baseURL:    DefaultBaseURL,
 		httpClient: &http.Client{Timeout: 15 * time.Second},
+		recorder:   noopRecorder{},
 	}
 	for _, opt := range opts {
 		opt(c)
@@ -56,11 +60,17 @@ func (c *Client) DoRequest(ctx context.Context, path string, params url.Values, 
 	if err != nil {
 		return fmt.Errorf("create request %s: %w", path, err)
 	}
+	start := time.Now()
 	resp, err := c.httpClient.Do(req)
+	duration := time.Since(start)
 	if err != nil {
+		c.recorder.RecordRequest(ctx, extractEndpoint(path), duration, 0)
+		logx.WithContext(ctx).Errorf("openalex request failed: %s, duration: %v, error: %+v", path, duration, err)
 		return fmt.Errorf("request %s: %w", path, err)
 	}
 	defer resp.Body.Close()
+	c.recorder.RecordRequest(ctx, extractEndpoint(path), duration, resp.StatusCode)
+	logx.WithContext(ctx).Debugf("openalex request: %s, status: %d, duration: %v", path, resp.StatusCode, duration)
 
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
