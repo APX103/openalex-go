@@ -43,8 +43,9 @@ type PrometheusRecorder struct {
 	subsystem  string
 	buckets    []float64
 
-	requestDuration *prometheus.HistogramVec
-	requestTotal    *prometheus.CounterVec
+	requestDuration         *prometheus.HistogramVec
+	requestDurationSummary  *prometheus.SummaryVec
+	requestTotal            *prometheus.CounterVec
 }
 
 // NewPrometheusRecorder creates and registers Prometheus metrics.
@@ -67,6 +68,14 @@ func NewPrometheusRecorder(opts ...RecorderOption) *PrometheusRecorder {
 		Buckets:   pr.buckets,
 	}, []string{"endpoint"})
 
+	pr.requestDurationSummary = prometheus.NewSummaryVec(prometheus.SummaryOpts{
+		Namespace:  pr.namespace,
+		Subsystem:  pr.subsystem,
+		Name:       "request_duration_seconds_summary",
+		Help:       "Summary of OpenAlex API request duration in seconds.",
+		Objectives: map[float64]float64{0.5: 0.05, 0.9: 0.01, 0.99: 0.001},
+	}, []string{"endpoint"})
+
 	pr.requestTotal = prometheus.NewCounterVec(prometheus.CounterOpts{
 		Namespace: pr.namespace,
 		Subsystem: pr.subsystem,
@@ -74,13 +83,14 @@ func NewPrometheusRecorder(opts ...RecorderOption) *PrometheusRecorder {
 		Help:      "Total number of OpenAlex API requests.",
 	}, []string{"endpoint", "status"})
 
-	pr.registerer.MustRegister(pr.requestDuration, pr.requestTotal)
+	pr.registerer.MustRegister(pr.requestDuration, pr.requestDurationSummary, pr.requestTotal)
 	return pr
 }
 
 // RecordRequest records metrics for a single API request.
 func (pr *PrometheusRecorder) RecordRequest(_ context.Context, endpoint string, duration time.Duration, statusCode int) {
 	pr.requestDuration.WithLabelValues(endpoint).Observe(duration.Seconds())
+	pr.requestDurationSummary.WithLabelValues(endpoint).Observe(duration.Seconds())
 	pr.requestTotal.WithLabelValues(endpoint, fmt.Sprintf("%d", statusCode)).Inc()
 }
 

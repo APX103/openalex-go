@@ -37,6 +37,14 @@ func TestRecordRequest(t *testing.T) {
 	if len(total.GetMetric()) != 3 {
 		t.Fatalf("expected 3 total counters (works/200, works/404, authors/200), got %d", len(total.GetMetric()))
 	}
+
+	summary := findMetric(mfs, "openalex_request_duration_seconds_summary")
+	if summary == nil {
+		t.Fatal("summary metric not found")
+	}
+	if len(summary.GetMetric()) != 2 {
+		t.Fatalf("expected 2 summary series (works, authors), got %d", len(summary.GetMetric()))
+	}
 }
 
 func TestRecordRequestNetworkError(t *testing.T) {
