@@ -64,7 +64,7 @@ func ResolvePDF(w PDFWork) PDFResult {
 	}
 	if w.GetDoi() != "" {
 		return PDFResult{
-			URL:    fmt.Sprintf("https://doi.org/%s", w.GetDoi()),
+			URL:    w.GetDoi(),
 			Source: PDFSourceDOI,
 		}
 	}

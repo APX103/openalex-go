@@ -66,7 +66,7 @@ func TestResolvePDF(t *testing.T) {
 		},
 		{
 			name: "DOI redirect",
-			work: &mockPDFWork{doi: "10.1234/test"},
+			work: &mockPDFWork{doi: "https://doi.org/10.1234/test"},
 			wantSrc: PDFSourceDOI,
 			wantURL: "https://doi.org/10.1234/test",
 		},
